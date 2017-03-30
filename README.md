@@ -4,41 +4,41 @@
 [![release](https://img.shields.io/badge/release-v2.1.6-blue.png)](https://github.com/Tencent/xLua/releases)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-blue.png)](https://github.com/Tencent/xLua/pulls)
 
-## C#下Lua编程支持
+## C#에 Lua 스크립트 지원
 
-xLua为Unity、 .Net、 Mono等C#环境增加Lua脚本编程的能力，借助xLua，这些Lua代码可以方便的和C#相互调用。
+xLua는 Unity, .Net, Mono등의 C#환경에 Lua스크립트를 사용하도록 지원하며, 이 Lua코드는 C#과 상호도용이 가능합니다.
 
-## xLua的突破
+## xLua의 특장점
 
-xLua在功能、性能、易用性都有不少突破，这几方面分别最具代表性的是：
+xLua는 기능, 성능, 사용성 모든 면에서 장점이 있습니다. 다음 몇가지 방면에서 특수성을 가집니다.
 
-* 可以运行时把C#实现（方法，操作符，属性，事件等等）替换成lua实现；
-* 出色的GC优化，自定义struct，枚举在Lua和C#间传递无C# gc alloc；
-* 编辑器下无需生成代码，开发更轻量；
+* C#코드(메소드, 오퍼레이터, 프로퍼티, 이벤트 등등)을 Lua코드로 대체하여 실행할 수 있습니다.
+* 특별한 GC 최적화로 사용자정의 struct, enum등을 C# GC alloc 없이 Lua와 C#간에 전달할 수 있습니다.
+* 에디터상에서 코드를 작성할 필요가 없어, 개발이 더 가벼워짐
 
-更详细的特性、平台支持介绍请看[这里](Assets/XLua/Doc/features.md)。
+상세한 내용 및 플랫폼지원 소개는 [이것](Assets/XLua/Doc/features.md)을 참고 바랍니다.
 
-## 安装
+## 설치
 
-直接解压工程下可用。第一次使用建议把例子包也安装，运行看看效果。
+압축을 풀어서 바로 사용가능. 맨 처음 사용시 샘플 패키지를 설치하시고 실행하여 효과를 보시기 바랍니다.
 
-如果希望安装到其它目录，请看[FAQ](Assets/XLua/Doc/faq.md)相关介绍。
+다른 디렉토리에 설치하기를 원한다면 [FAQ](Assets/XLua/Doc/faq.md) 관련 내용을 참고 바랍니다.
 
 ## lua5.3 vs luajit
 
-xLua有两个版本，分别集成了lua5.3和luajit，一个项目只能选择其一。这两个版本C#代码是一样的，不同的是Plugins部分。
+xLua는 lua 5.3과 luajit의 두가지 버전이 있으며, 하나의 프로젝트는 한가지만을 선택할 수 있습니다. 이 두 버전의 C#코드는 동일하며, Plugins 부분만 다릅니다.
 
-lua5.3的特性更丰富些，比如支持原生64位整数，支持苹果bitcode，支持utf8等。出现问题因为是纯c代码，也好定位。比起luajit，lua对安装包的影响也更小。
+lua5.3는 64비트 정수, Apple bitcode, utf8지원 등의 더 많은 기능을 가집니다. c function내에서의 에러도 정확한 위치를 찾아줍니다. luajit에 비해 lua가 설치패키지에 주는 영향이 적습니다.
 
-而luajit胜在性能，如果其jit不出问题的话，可以比lua高一个数量级。目前luajit作者不打算维护luajit，在找人接替其维护，后续发展不太明朗。
+그러나 luajit는 장점은 성능입니다. 현재 luajit는 제작자가 luajit의 업데이트를 중단한 상태이며, 업데이트를 할 사람을 찾는 중이어서 이후의 개발이 불투명한 상태입니다.
 
-项目可以根据自己情况判断哪个更适合。因为目前lua53版本使用较多，所以xLua工程Plugins目录下默认配套是lua53版本。
+프로젝트의 상황에 따라 판단하여 더 적합한것을 선택할 수 있습니다. 현재로는 lua5.3 버전의 사용이 좀더 많기 때문에, xLua프로젝트의 Plugins 디렉토리에는 기본으로 Lua 5.3버전은 포함하고 있습니다.
 
-## 快速入门
+## Quick Start
 
-一个完整的例子仅需3行代码：
+3줄이면 완전한 코드가 됩니다.
 
-下载xLua后解压到Unity工程Assets目录下，建一个MonoBehaviour拖到场景，在Start加入如下代码：
+xLua를 다운로드 받아 Unity 프로젝트의 Assets 디렉토리에 풀어넣고, MonoBehaviour를 Scene에 drag하여, Start에 다음의 코드를 삽입합니다.
 
 ```csharp
 XLua.LuaEnv luaenv = new XLua.LuaEnv();
@@ -46,64 +46,64 @@ luaenv.DoString("CS.UnityEngine.Debug.Log('hello world')");
 luaenv.Dispose();
 ```
 
-1、DoString参数为string，可输入任意合法的Lua代码，本示例在lua里调用C#的UnityEngine.Debug.Log打印了个日志。
+1. DoString의 인자는 string이며 임의의 Lua코드를 입력할 수 있습니다. 이 예제에서는 Lua상에서 C#의 UnityEngine.Debug.Log를 사용하고 있습니다.
 
-2、一个LuaEnv实例对应Lua虚拟机，出于开销的考虑，建议全局唯一。
+2.  하나의 LuaEnv는 하나의 Lua가상머신에 대응합니다. 프로젝트에 따라 다르겠지만 글로벌로 하나만 사용하기를 권장합니다.
 
-C#主动调用lua也很简单，比如要调用lua的系统函数，推荐方式是：
+C#에서 Lua를 사용하는것도 매우 간단합니다. 예를들어 Lua의 시스템 함수를 사용하는 추천방식은 다음과 같습니다.
 
-* 声明
+* 선언
 
 ```csharp
 [XLua.CSharpCallLua]
 public delegate double LuaMax(double a, double b);
 ```
 
-* 绑定
+* 바인딩
 
 ```csharp
 var max = luaenv.Global.GetInPath<LuaMax>("math.max");
 ```
 
-* 调用
+* 사용
 
 ```csharp
 Debug.Log("max:" + max(32, 12));
 ```
 
-建议绑定一次，重复使用。生成了代码的话，调用max是不产生gc alloc的。
+바인딩은 1회만 하는것을 추천합니다. 코드를 생성한 후에 max를 사용할 때에는 gc alloc을 생산하지 않습니다.
 
-## 热补丁
+## 핫픽스
 
-* 侵入性小，老项目原有代码不做任何调整就可使用。
-* 运行时影响小，不打补丁基本和原有程序一样。
-* 出问题了可以用Lua来打补丁，这时才会走到lua代码逻辑；
+* 작은 수정. 기존 코드의 수정없이 사용이 가능합니다.
+* 운영시 영향이 적음. 베이스 및 기존 코드를 패치할 필요가 없음
+* 버그 발생시, Lua를 이용해 패치를 할 수 있으며, 이때에서야 Lua코드 로직으로 진입합니다.
 
-[这里](Assets/XLua/Doc/hotfix.md)是使用指南。
+[여기](Assets/XLua/Doc/hotfix.md)에 관련 내용이 있습니다.
 
-## 更多示例
+## 더 많은 예제
 
-* [01_Helloworld](Assets/XLua/Examples/01_Helloworld/): 快速入门的例子。
-* [02_U3DScripting](Assets/XLua/Examples/02_U3DScripting/): 展示怎么用lua来写MonoBehaviour。
-* [03_UIEvent](Assets/XLua/Examples/03_UIEvent/): 展示怎么用lua来写UI逻辑。
-* [04_LuaObjectOrented](Assets/XLua/Examples/04_LuaObjectOrented/): 展示lua面向对象和C#的配合。
-* [05_NoGc](Assets/XLua/Examples/05_NoGc/): 展示怎么去避免值类型的GC。
-* [06_Coroutine](Assets/XLua/Examples/06_Coroutine/): 展示lua协程怎么和Unity协程相配合。
-* [07_AsyncTest](Assets/XLua/Examples/07_AsyncTest/): 展示怎么用lua协程来把异步逻辑同步化。
-* [08_Hotfix](Assets/XLua/Examples/08_Hotfix/): 热补丁的示例（需要开启热补丁特性，如何开启请看[指南](Assets/XLua/Doc/hotfix.md)）。
-* [09_GenericMethod](Assets/XLua/Examples/09_GenericMethod/): 泛化函数支持的演示。
-* [10_SignatureLoader](Assets/XLua/Examples/10_SignatureLoader/): 展示如何读取经数字签名的lua脚本，参见[数字签名](Assets/XLua/Doc/signature.md)的文档介绍。
+* [01_Helloworld](Assets/XLua/Examples/01_Helloworld/): 입문 예제
+* [02_U3DScripting](Assets/XLua/Examples/02_U3DScripting/): lua에서 어떻게 MonoBehaviour를 작성하는지 예제
+* [03_UIEvent](Assets/XLua/Examples/03_UIEvent/): Lua에서 어떻게 UI로직을 작성하는지 예제
+* [04_LuaObjectOrented](Assets/XLua/Examples/04_LuaObjectOrented/):  Lua 객체지향과 C#의 연동 예제
+* [05_NoGc](Assets/XLua/Examples/05_NoGc/): GC를 피하는 예제
+* [06_Coroutine](Assets/XLua/Examples/06_Coroutine/): Lua coroutine과 Unity coroutine의 상호연동
+* [07_AsyncTest](Assets/XLua/Examples/07_AsyncTest/): Lua coroutine 동기화 예제
+* [08_Hotfix](Assets/XLua/Examples/08_Hotfix/): 핫픽스 예제 (핫픽스를 사용하기 위해 다음의 [문서](Assets/XLua/Doc/hotfix.md)를 참조하시오)
+* [09_GenericMethod](Assets/XLua/Examples/09_GenericMethod/): 제너릭함수 지원 예제
+* [10_SignatureLoader](Assets/XLua/Examples/10_SignatureLoader/): 코드암호화 관련 예제. [문서](Assets/XLua/Doc/signature.md)참조
  
-## 文档
+## 문서
 
-* [XLua教程.doc](Assets/XLua/Doc/XLua教程.doc)：教程，其配套代码[这里](Assets/XLua/Tutorial/)。
-* [XLua的配置.doc](Assets/XLua/Doc/XLua的配置.doc)：介绍如何配置xLua。
-* [XLua增加删除第三方lua库.doc](Assets/XLua/Doc/XLua增加删除第三方lua库.doc)：如何增删第三方lua扩展库。
-* [XLua API.doc](Assets/XLua/Doc/XLua_API.doc)：API文档。
-* [生成引擎二次开发指南](Assets/XLua/Doc/custom_generate.md)：介绍如何做生成引擎的二次开发。
-* [热补丁操作指南](Assets/XLua/Doc/hotfix.md)：介绍如何使用热补丁特性。
+* [XLua튜토리얼.doc](Assets/XLua/Doc/XLua튜토리얼.doc)：튜토리얼, [예제코드](Assets/XLua/Tutorial/).
+* [XLua的配置.doc](Assets/XLua/Doc/XLua的配置.doc)：xLua 설정에 관하여
+* [XLua增加删除第三方lua库.doc](Assets/XLua/Doc/XLua增加删除第三方lua库.doc)： 서드파티 lua확장라이브러리 추가에 관하여.
+* [XLua API.doc](Assets/XLua/Doc/XLua_API.doc)：xLua API문서.
+* [生成引擎二次开发指南](Assets/XLua/Doc/custom_generate.md)：코드생성 엔진의 2차개발에 관하여
+* [热补丁操作指南](Assets/XLua/Doc/hotfix.md)：핫픽스 기능의 사용에 관해
 
-## 技术支持
+## 기술지원 技术支持
 
 QQ群：612705778 验证答案：有问题先找FAQ
 
