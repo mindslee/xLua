@@ -96,7 +96,7 @@ Debug.Log("max:" + max(32, 12));
  
 ## 문서
 
-* [XLua튜토리얼.doc](Assets/XLua/Doc/XLua튜토리얼.doc)：튜토리얼, [예제코드](Assets/XLua/Tutorial/).
+* [XLua튜토리얼.docx](Assets/XLua/Doc/XLua튜토리얼.docx)：튜토리얼, [예제코드](Assets/XLua/Tutorial/).
 * [XLua的配置.doc](Assets/XLua/Doc/XLua的配置.doc)：xLua 설정에 관하여
 * [XLua增加删除第三方lua库.doc](Assets/XLua/Doc/XLua增加删除第三方lua库.doc)： 서드파티 lua확장라이브러리 추가에 관하여.
 * [XLua API.doc](Assets/XLua/Doc/XLua_API.doc)：xLua API문서.
