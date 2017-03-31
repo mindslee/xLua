@@ -1,124 +1,124 @@
 # FAQ
 
-## xLua发布包怎么用？
+## xLua는 어떻게 사용하는가?
 
-xLua目前以zip包形式发布，在工程目录下解压即可。
+xLua 현재 zip으로 압축되어 배포된다. 프로젝트 디렉토리에 압축을 풀어 놓으면 된다.
 
-## xLua可以放别的目录吗？
+## xLua는 다른 디렉토리에 설치해도 되는가?
 
-可以，但生成代码目录需要配置一下（默认放Assets\XLua\Gen目录），具体可以看《XLua的配置.doc》的GenPath配置介绍。
+그렇다. 그러나 CodeGeneration 디렉토리는 설정을 해줘야 한다. (기본적으로는 Assets\XLua\Gen), 구체적인 내용은 <XLua의설정.docx>의 GenPath설정 내용을 참고하시오.
 
-## lua源码只能以txt后缀？
+## lua소스코드는 .txt 여야만 하는가?
 
-什么后缀都可以。
+어던 확장자여도 상관없다
 
-如果你想以TextAsset打包到安装包（比如放到Resources目录），Unity不认lua后缀，这是Unity的规则。
+만일 TextAsset으로 빌드를 하려면(예르르들어 Resources디렉토리), Unity가 .lua 확장자를 인식할수 없다. 이것을 Unity의 규칙이다.
 
-如果你不打包到安装包，就没有后缀的限制：比如自行下载到某个目录（这也是热更的正确姿势），然后通过CustomLoader或者设置package.path去读这个目录。
+만약 설치패키지에 포함하지 않는다면, 확장자 규칙은 없다. 예를들어 어떤 디렉토리에 다운로드 받은후, CustomLoader나 package.path에 설정을 통해 이 디렉토리에서 로드할 수 있다.
 
-那为啥xLua本身带的lua源码（包括示例）为什么都是txt结尾呢？因为xLua本身就一个库，不含下载功能，也不方便运行时去某个地方下载代码，通过TextAsset是较简单的方式。
+그런 어째서 xLua가 가진 lua코드들은 .txt확장자를 가지고 있는가? 왜냐하면 xLua자체는 하나의 라이브러리이고, Download기능을 가지고 있지 않으며, 런타임중에 다운로드 받을수도 없기떄문에 TextAsset을 통해 간단하게 처리하기 때문이다.
 
-## Plugins源码在哪里可以找到，怎么使用？
+## Plugins소스코드는 어디에 있으면, 어떻게 사용하는가?
 
-Plugins源码位于xLua_Project_Root/build下。
+Plugins 소스코드는 xLua_Project_Root/build에 있다.
 
-源码编译依赖cmake，安装cmake后执行make_xxxx_yyyy.zz即可，xxxx代表平台，比如ios，android等，yyyy是要集成的虚拟机，有lua53和luajit两者，zz是后缀，windows下是bat，其它平台是sh。
+소스코드는 cmake로 컴파일되며, cmake설치후 make_xxxx_yyyy.zz을 실행한다. xxxx는 플랫폼(ios，android등), yyyy는 사용하는 가상머신(lua53과 luajit중에 선택), zz는 확장자(windows는 bat, 기타 sh).
 
-windows编译依赖Visual Studio 2015。
+windows는 Visual Studio 2015 에 의존한다.
 
-android编译在linux下执行，依赖NDK，并且需要把脚本中ANDROID_NDK指向NDK的安装目录。
+android 컴파일은 linux에서 진행하며, NDK가 필요하다. 그리고 스크립트 내 ANDROID_NDK를 NDK설치 디렉토리로 변경해야한다.
 
-ios和osx需要在mac下编译。
+ios와 osx은 mac에서 컴파일한다.
 
-## 报类似“xlua.access, no field __Hitfix0_Update”的错误怎么解决？
+## "xlua.access, no field __Hitfix0_Update"의 에러는 어떻게 해결하는가?
 
-按[Hotfix操作指南](hotfix.md)一步步操作。
+[Hotfix 가이드](hotfix.md)를 잘 보고 진행하시오.
 
-## 报“please install the Tools”
+## "please install the Tools"
 
-没有把Tools安装到Assets平级目录，安装包，或者master下都能找到这个目录。
+Tools가 Assets 디렉토리에 없음. 설치패키지 또는 master에서 찾을 수 있다.
 
-## 报“This delegate/interface must add to CSharpCallLua : XXX”异常怎么解决？
+## "This delegate/interface must add to CSharpCallLua : XXX" exception은 어떻게 해결하는가?
 
-在编辑器下xLua不生成代码都可以运行，出现这种提示，要么是该类型没加CSharpCallLua，要么是加之前生成过代码，没重新执行生成。
+유니티에디터에서 xLua는 코드를 생성하지 않아도 다 동작한다. 이 메시지가 나왔다는것은 CSharpCallLua를 추가하지 않았거나, 추가한 후 코드를 재생성 하지 않은것이다.
 
-解决办法，确认XXX（类型名）加上CSharpCallLua后，清除代码后运行。
+해결방법으로는, 클래스 선언에 [CSharpCallLua]를 추가후, 코드를 클리어 후 다시 생성
 
-## hotfix下怎么触发一个event
+## hotfix에서 어떻게 event를 발생시키는가?
 
-首先通过xlua.private_accessible开启私有成员访问。
+우선 xlua.private_accessible를 통해 private멤버 방문을 허용한다.
 
-跟着通过对象的"&事件名"字段调用delegate，例如self\['&MyEvent'\]()，其中MyEvent是事件名。
+객체의 "&이벤트명" 필드를 통해 delegate를 사용하다. 예를들어 self\['&MyEvent'\](). 여기서 MyEvent가 이벤트명이다.
 
-## 怎么对Unity Coroutine的实现函数打补丁？
+## Unity Coroutine의 구현메소드를 어떻게 패치하는가?
 
-见[Hotfix操作指南](hotfix.md)相应章节。
+[Hotfix가이드](hotfix.md)에 관련 장이 있음.
 
-## 支持NGUI（或者UGUI/DOTween等等）么？
+## NGUI(또는 UGUI/DOTween 등등)을 지원하는가?
 
-支持，xLua最主要的特性是让你原来用C#写的地方可以换成用lua写，你C#能用的插件，基本都能用。
+지원한다, xLua는 주요한 특징은 C#으로 작성된 코드를 lua코드로 대체하는것이다. C#에서 사용할 수 있는 Plugin은 기본적으로 모두 사용가능하다.
 
-## 如果需要调试，CustomLoader的filepath参数该如何处理？
+## 디버깅이 필요할때, CustomLoader의 filepath인자는 어떻게 처리되는가?
 
-lua里头调用require 'a.b'时，CustomLoader会被调用，并传入字符串"a.b"，你需要理解这字符串，（从文件/内存/网络等）加载好lua文件，返回两个东西，第一个是调试器可以理解的路径，比如：a/b.lua，这个通过设置ref类型的filepath参数返回，第二个是UTF8格式的源码的字节流（byte[]），通过返回值返回。
+lua에서 require 'a.b'사용시, CustomLoader가 사용되며, "a.b"스트링이 전달된다. 이때 이 스트링을 이해해야 하며(문서인지, 메모리인지, 네트워크주소인지 등등), lua 파일을 잘 로드하고, 두개의 값을 리턴한다. 하나는 디버거가 인식할 수 있는 path(예를 들어 a/b.lua, 이것은 ref type의 filepath인자로 반환된다)이고, 또다른 하나는 utf8형식 소스의 스트림(byte[])이다. 이것은 return값을 통해 반환된다.
 
-## 什么是生成代码？
+## Generate Code란 무엇인가?
 
-xLua支持的lua和C#间交互技术之一，这种技术通过生成两者间的适配代码来实现交互，性能较好，是推荐的方式。
+xLua에서 지원하는 Lua와 C#간의 상호 통신방식중에 하나이다. 이 방식은 양자간의 바인딩코드를 생성하여 구현되며, 성능이 좋고 추천하는 방식이다.
 
-另一种交互技术是反射，这种方式对安装包的影响更少，可以在性能要求不高或者对安装包大小很敏感的场景下使用。
+또다른 방식은 Reflection을 사용하는 것인데, 이 방법은 설치패키지에 영향이 더 적고, 성능요구도 크지않기 때문에, 설치패키지 크기에 민감한 경우에 사용할 수 있다.
 
-## 改了接口后，之前生成的代码出现错误怎么办？
+## interface 변경후, 이전에 생성된 코드에서 오류가 발생하는데 어떻게 하는가?
 
-清除掉生成代码（执行“Clear Generated Code”菜单，如果你重启过，会找不到这个菜单，这时你可以手动删除整个生成代码目录），等编译完成后重新生成。
+생성된 코드를 삭제하라. ("Clear Generated Code" 메뉴를 실행하라. 만약 재실행후 이 메뉴를 찾지 못한다면, 수동으로 코드생성 디렉토리를 삭제할수 있다.) 컴파일이 완료된다 다시 생성하라.
 
-## 应该什么时候生成代码？
+## 언제 Generate Code를 해야 하는가?
 
-开发期不建议生成代码，可以避免很多由于不一致导致的编译失败，以及生成代码本身的编译等待。
+개발중에는 Generate를 하지 않는것을 추천한다. 그래야 수많은 이유의 컴파일 오류를 피할 수 있으며, 생성된 코드의 컴파일도 기다려야 하기때문이다.
 
-build手机版本前必须执行生成代码，建议做成自动化的。
+폰버전 빌드 전에 반드시 Generate Code를 수행해야하며, 자동화 하길 권장한다.
 
-做性能调优，性能测试前必须执行生成代码，因为生成和不生成性能的区别还是很大的。
+성능 프로파일이나 테스트를 하기전에 Generate Code를 반드시 수행해야 한다. 왜냐하면 한것과 안한것의 차이가 매우 크기 때문이다.
 
-## CS名字空间下有所有C# API是不是很占内存？
+## CS namespace에 모든 C# API가 있는데 메모리를 많이 점유하는것은 아닌가?
 
-由于用了lazyload，这个“有”只是个虚拟的概念，比如UnityEngine.GameObject，是访问第一次CS.UnityEngine.GameObject或者第一个实例往lua传送才加载该类型方法，属性等。
+lazyload를 하기때문에, 사용할 때만 생성된다. 예를 들어 UnityEngine.GameObject은 맨처음 CS.UnityEngine.GameObject 또는 처음 Example을 lua에 전달될때 해당 클래스의 method와 property가 로드된다.
 
-## LuaCallSharp以及CSharpCallLua两种生成各在什么场景下用？
+## 어떤상황에서 LuaCallSharp를 쓰고 어떤 상황에서 CSharpCallLua를 사용하는가?
 
-看调用者和被调用者，比如要在lua调用C#的GameObject.Find函数，或者调用gameobject的实例方法，属性等，GameObject类要加LuaCallSharp，而想把一个lua函数挂到UI回调，这是调用者是C#，被调用的是一个lua函数，所以回调声明的delegate要加CSharpCallLua。
+사용하는 쪽인지 사용되는쪽인지를. 예를들어 lua에서 C#의 GameObject.Find함수를 사용하거나 GameObject에 구현된 메소드, 속성등을 사용하려면, GameObject클래스에는 LuaCallSharp을 추가해야한다. 그리고 lua함수를 UI callback으로 사용할 경우 이것은 C#이 사용자이고, lua함수가 사용되어지는 것이다. 그러므로 callback으로 이 되는 delegate는 CSharpCallLua를 사용한다.
 
-有时会比较迷惑人，比如List<int>.Find(Predicate<int> match)的调用，List<int>当然是加LuaCallSharp，而Predicate<int>却要加CSharpCallLua，因为match的调用者在C#，被调用的是一个lua函数。
+이것이 가끔을 헤깔릴 수가 있는데, 예를들어 List<int>.Find(Predicate<int> match)를 사용시, List<int>는 당연히 LuaCallSharp를 추가하고, Predicate<int>는 CSharpCallLua를 추가해야한다. 왜냐하면 match를 호출하는쪽은 C#이며, 호출되는쪽은 lua함수 이기 때문이다.
 
-更无脑一点的方式是看到“This delegate/interface must add to CSharpCallLua : XXX”，就把XXX加到CSharpCallLua即可。
+좀더 쉽게 생각하면 "This delegate/interface must add to CSharpCallLua : XXX” 메시지를 보면 XXX에 CSharpCallLua를 추가하면 된다.
 
-## 值类型传递会有gc alloc么？
+## 값 타입 전달시 gc alloc이 발생하는가?
 
-如果你使用的是delegate调用lua函数，或者用LuaTable、LuaFunction的无gc接口，或者数组的话，以下值类型都是没gc的：
+만약 delegate로 lua함수를 사용하거나 LuaTable, LuaFunction의 무 GC 인터페이스나, array, value 타입을 사용할 경우 GC가 발생하지 않는다. 
 
-1、所有的基本值类型（所有整数，所有浮点数，decimal）；
+1. 모든 기본 값 타입 (모든 정수형, 실수형, decimal)
 
-2、所有的枚举类型；
+2. 모든 열거형
 
-3、字段只包含值类型的struct，可嵌套其它只包含值类型struct；
+3. 필드에 값 타입으로 이루어진 struct, 또다른 값 타입으로 된 struct를 중첩하여 가진 struct
 
-其中2、3需要把该类型加到GCOptimize。
+이중 2, 3은 해당 타입을 GCOptimize에 추가해야한다.
 
-## 反射在ios下可用吗？
+## Reflection을 iOS에서 사용가능한가?
 
-ios下的限制有两个：1、没有jit；2、代码剪裁（stripping）；
+ios에서는 두가지 제한이 있다. 하나는 jit가 없다는것이고, 두번째는 code stripping이다.
 
-对于C#通过delegate或者interface调用lua，如果不生成代码是用反射的emit，这依赖jit，所以这目前只在编辑器可用。
+C#에서 delegate나 interface를 통해 Lua를 사용할때, Code Generation을 해놓지 않았으면 Reflection emit를 사용한다. 이것은 lazy jit이기 때문에 유니티 에디터에서만 사용가능하다.
 
-对于lua调用C#，主要会被代码剪裁影响，这时你可以配置ReflectionUse（不要配LuaCallSharp），执行“Generate Code”，这时不会对该类生成封装代码，而是生成link.xml把该类配置为不剪裁。
+Lua에서 C#을 사용시에는, code stripping에 영향을 받을 수 있다. 이 경우 ReflectionUse를 표기할수 있다.(LuaCallSharp를 표기하지 않는다)，"Generate Code"시 해당 클래스는 바인딩 코드를 생서하지 않을것이며, link.xml에 해당 클래스의 code stripping을 안하도록 설정하게 될 것이다.
 
-简而言之，除了CSharpCallLua是必须的（这类生成代码往往不多），LuaCallSharp生成都可以改为用反射。
+간단히 말해, CSharpCallLua는 꼭 필요한것에만 사용하고(이 유형은 일반적으로 많지 않다), LuaCallSharp 생성은 모두 Reflection을 사용하도록 할 수 있다.
 
-## 支持泛化方法的调用么？
+## Generic Method를 사용할수 있는가?
 
-不直接支持，但能调用到。如果是静态方法，可以自己写个封装来实例化泛化方法。
+직접지원은 아니지만 사용할 수 있다. 만약 static method라면 해당 제너릭메소드의 래퍼코드를 직접 작성할 수 있다.
 
-如果是成员方法，xLua支持扩展方法，你可以添加一个扩展方法来实例化泛化方法。该扩展方法使用起来就和普通成员方法一样。
+만약 member method라면, xLua는 확장 메소드를 지원하므로, 확장 메소드로 제너릭 메소드를 구현을 추가할 수 있다. 확장 메소드를 사용하는 방법은 일반 멤버 메소드를 사용하는것과 동일하다.
 
 ```csharp
 // C#
@@ -136,25 +136,25 @@ go:GetButton().onClick:AddListener(function()
 end)
 ```
 
-## 支持lua调用C#重载函数吗？
+## Lua에서 C#의 오버로딩 함수를 지원하는가?
 
-支持，但没有C#端支持的那么完善，比如重载方法void Foo(int a)和void Foo(short a)，由于int和short都对应lua的number，是没法根据参数判断调用的是哪个重载。这时你可以借助扩展方法来为其中一个起一个别名。
+지원한다. 그러나 C#에서 지원하는것 처럼 완벽하지는 않다, 예를들어 오버로드 함수 void Foo(int a)와 void Foo(short a)가 있을때, int와 short는 모두 lua의 number에 대응되기 때문에 인자에 따라 어떤 함수를 호출하는지 판단할 수가 없다. 이것은 확장메소드를 통해 각각의 별명을 지어 해결하면 된다.
 
-## 编辑器下运行正常，打包的时候生成代码报“没有某方法/属性/字段定义”怎么办？
+## 유니티 에디터상에서는 정상으로 동작하는데, 빌드를 하려하면, "어떤 메소드, 프로퍼티, 필드정의가 없다" 라는 메시지가 나온다 어떻게 하는가?
 
-往往是由于该方法/属性/字段是扩在条件编译里头，只在UNITY_EDITOR下有效，这是可以通过把这方法/属性/字段加到黑名单来解决，加了之后要等编译完成后重新执行代码生成。
+종종 어떤 메소드, 프로퍼티, 필드가 매크로 조건에 따라 동작하기도 한다(UNITY_EDITOR에서만 유효한). 이것은 이런 메소드, 프로퍼티, 필드를 블랙리스트에 등록하여 해결한다. 추가후 컴파일이 완료된 후에 코드생성을 다시 수행한다.
 
-## this[string field]或者this[object field]操作符重载为什么在lua无法访问？（比如Dictionary\<string, xxx\>, Dictionary\<object, xxx\>在lua中无法通过dic['abc']或者dic.abc检索值）
+## this[string field] 또는 this[object field] operator overload는 lua에서 왜 사용이 불가한가? (예 Dictionary\<string, xxx\>, Dictionary\<object, xxx\>는 Lua에서 dic['abc']또는 dic.abc의 방법으로 사용할 수 없다)
 
-在2.1.5~2.1.6版本把这个特性去掉，因为：1、这个特性会导致基类定义的方法、属性、字段等无法访问（比如Animation无法访问到GetComponent方法）；2、key为当前类某方法、属性、字段的名字的数据无法检索，比如Dictionary类型，dic['TryGetValue']返回的是一个函数，指向Dictionary的TryGetValue方法。
+2.1.5~2.1.6 버전에서 이 기능이 제거되었다. 왜냐하면 첫째 이 기능은 베이스클래스에 정의된 메소드, 프로퍼티 필드에 접근하지 못하는 상황을 발생시킬 수 있다. (예를 들어 Animation에서 GetComponent 메소드에 접근이 안됨） 둘째, key를 객체로 하게되면 메소드, 프로퍼티, 필드의 데이터에 접근할 수가 없다. 예를들어 Dictionary에서 dic['TryGetValue']가 함수를 리턴하면, Dictionary의 TryGetValue메소드를 접근하게 된다.
 
-建议直接方法该操作符的等效方法，比如List的Get，Dictionary的TryGetValue，如果该方法没有提供，可以在C#那通过Extension method封装一个使用。
+그러므로 해당 operator와 동일한 기능의 메소드를 사용하는것을 추천한다. 예를들어 List의 Get, Dictionary의 TryGetValue. 만약 그런 메소드가 존재하지 않는다면, C#에 Extension method를 추가하여 사용하면 된다.
 
-## 有的Unity对象，在C#为null，在lua为啥不为nil呢？比如一个已经Destroy的GameObject
+## C#에서 null인 Unity객체가 lua에서는 어째서 nil이 아닌가? 예를들어 이미 Destroy한 GameObject.
 
-其实那C#对象并不为null，是UnityEngine.Object重载的==操作符，当一个对象被Destroy，未初始化等情况，obj == null返回true，但这C#对象并不为null，可以通过System.Object.ReferenceEquals(null, obj)来验证下。
+사실 그 C#객체는 null이 아니고, UnityEngine.Object가 == operator를 오버로드하여 그렇게 나오는것이다. Destory했거나 아직 초기화 하지 않은 객체에서, obj == null는 true를 리턴한다. 하지만 이 C# 오브젝트는 null이 아니다. System.Object.ReferenceEquals(null, obj)을 통해 확인할 수 있다.
 
-对应这种情况，可以为UnityEngine.Object写一个扩展方法：
+이런 상황에 대비하여 UnityEngine.Object에 다음의 Extension을 사용할 수 있다.
 
 ~~~csharp
 [LuaCallCSharp]
@@ -168,19 +168,19 @@ public static class UnityEngineObjectExtention
 }
 ~~~
 
-然后在lua那你对所有UnityEngine.Object实例都使用IsNull判断
+그러면 Lua에서 모든 UnityEngine.Object에 IsNull 판단을 할 수 있다.
 
 ~~~lua
 print(go:GetComponent('Animator'):IsNull())
 ~~~
 
-## 泛型实例怎么构造
+## 제너릭 표현은 어떻게 구성하는가?
 
-泛型实例的构造和普通类型是一样的，都是CS.namespace.typename()，可能比较特殊的是typename的表达，泛型实例的typename的表达包含了标识符非法符号，最后一部分要换成["typename"]，以List<string>为例
+제너릭표현의 구성은 보통의 타입과 동일하다. 모두 CS.namespace.typename()이다. 조금 특히한것은 typename의 표현일 것이다. 제너릭의 typename의 표현은 비정규 심볼을 포함한다. 마지막의 일부분은 ["typename"]로 바뀐다. List<string>의 예를보면
 
 ~~~lua
 local lst = CS.System.Collections.Generic["List`1[System.String]"]()
 ~~~
 
-如果某个泛型实例的typename不确定，可以在C#测打印下typeof(不确定的类型).ToString()
+만약 어떤 제너릭의 typename을 잘 모른다면, C#에서 typeof().ToString()을 통해 확인하면된다.
 
